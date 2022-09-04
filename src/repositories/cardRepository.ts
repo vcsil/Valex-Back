@@ -2,11 +2,11 @@ import { connection } from '../db/database';
 import { mapObjectToUpdateQuery } from '../utils/sqlUtils';
 
 export type TransactionTypes =
-  | 'groceries'
-  | 'restaurant'
-  | 'transport'
-  | 'education'
-  | 'health';
+   | 'groceries'
+   | 'restaurant'
+   | 'transport'
+   | 'education'
+   | 'health';
 
 export interface Card {
   id: number;
@@ -82,11 +82,9 @@ export async function insert(cardData: CardInsertData) {
   } = cardData;
 
   connection.query(
-    `
-    INSERT INTO cards ("employeeId", number, "cardholderName", "securityCode",
+    `INSERT INTO cards ("employeeId", number, "cardholderName", "securityCode",
       "expirationDate", password, "isVirtual", "originalCardId", "isBlocked", type)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-  `,
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
     [
       employeeId,
       number,
@@ -110,11 +108,9 @@ export async function update(id: number, cardData: CardUpdateData) {
     });
 
   connection.query(
-    `
-    UPDATE cards
+    `UPDATE cards
       SET ${cardColumns}
-    WHERE $1=id
-  `,
+     WHERE $1=id`,
     [id, ...cardValues],
   );
 }

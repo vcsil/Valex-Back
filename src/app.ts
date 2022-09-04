@@ -2,14 +2,12 @@ import express, { json } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import chalk from 'chalk';
+import router from './routes/router';
 
 const server = express();
 server.use(json());
 server.use(cors());
-
-server.get('/', (req, res) => {
-  res.send('oi');
-});
+server.use(router);
 
 const PORT = process.env.PORT || 4000;
 
