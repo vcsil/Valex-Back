@@ -33,8 +33,9 @@ export async function getCardBalanceTransactions(req: Request, res: Response) {
 
 export async function blockCardController(req: Request, res: Response) {
   const { idCard, password }: { idCard: number; password: string } = req.body;
+  const { action } = req.params;
 
-  await unBlockCardService.unBlockCard(idCard, password, 'block');
+  await unBlockCardService.unBlockCard(idCard, password, action);
 
   res.sendStatus(200);
 }
