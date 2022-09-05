@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import dayjs from 'dayjs';
 dotenv.config();
 
-import * as cardService from './cardService';
+import * as cardService from './createCard';
 
 const cryptr = new Cryptr(process.env.TOKEN_CRYPTR || '');
 
