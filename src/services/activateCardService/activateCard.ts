@@ -5,19 +5,10 @@ import Cryptr from 'cryptr';
 import dayjs from 'dayjs';
 
 import * as cardRepository from '../../repositories/cardRepository';
+import * as searchFunctions from '../utils/searchFunctions';
 
 dayjs.extend(customParseFormat);
 const cryptr = new Cryptr(process.env.TOKEN_CRYPTR || '');
-
-async function findCardById(id: number) {
-  const card = await cardRepository.findById(id);
-  console.log('oii');
-  if (!card) throw { code: 'Not Found', message: 'Card not found' };
-
-  if (card.password) throw { code: 'Bad Request', message: 'Card is already active' };
-  
-  return card; 
-}
 
 async function validateDateCard(expirationDate: string) {
   const todayDateArr: string[] = dayjs().format('MM/YY').split('/');
@@ -47,7 +38,7 @@ function encryptPassword(password: string): string {
 }
 
 export async function activateCard(idCard: number, securityCode: string, password: string) {
-  const { expirationDate, securityCode: CVC } = await findCardById(idCard);
+  const { expirationDate, securityCode: CVC } = await searchFunctions.findCardById(idCard);
 
   await validateDateCard(expirationDate);
   await checkCVC(securityCode, CVC);

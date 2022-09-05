@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import * as getCardBalanceTransactionsService from '../services/getCardBalanceTransactionsService/getCardBalanceTransactions';
 import * as createCardService from '../services/createCardService/createCard';
 import * as activateCardService from '../services/activateCardService/activateCard';
 import { TransactionTypes } from '../repositories/cardRepository';
@@ -20,4 +21,11 @@ export async function activateCard(req: Request, res: Response) {
   await activateCardService.activateCard(idCard, securityCode, password);
 
   res.send('oii');
+}
+
+export async function getCardBalanceTransactions(req: Request, res: Response) {
+  const { idCard } = req.params;
+  const balanceAndTransactions: any = await getCardBalanceTransactionsService.getCardBalanceTransations(parseInt(idCard));
+
+  res.status(200).send(balanceAndTransactions);
 }
