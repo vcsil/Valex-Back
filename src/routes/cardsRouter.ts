@@ -1,29 +1,36 @@
 import { Router } from 'express';
 
 import validateSchema from '../middlewares/schemaValidationMiddleware';
-import { activateCard, createCard, getCardBalanceTransactions } from '../controllers/cardsController';
+import { activateCard, blockCardController, createCard, getCardBalanceTransactions } from '../controllers/cardsController';
 import { apiKeySchema } from '../schemas/apiKeySchema';
 import { createCardSchema } from '../schemas/createCardSchema';
 import { cardActivationSchema } from '../schemas/cardActivationSchema';
+import { blockCardSchema } from '../schemas/blockCardSchema';
 
 const cardsRouter = Router();
 
 cardsRouter.post(
-  '/card', 
+  '/cards', 
   validateSchema(apiKeySchema, 'headers', 'x-api-key'),
   validateSchema(createCardSchema, 'body'),
   createCard,
 );
 
 cardsRouter.patch(
-  '/card',
+  '/cards',
   validateSchema(cardActivationSchema, 'body'),
   activateCard,
 );
 
 cardsRouter.get(
-  '/card/:idCard',
+  '/cards/:idCard',
   getCardBalanceTransactions,
+);
+
+cardsRouter.patch(
+  '/cards/block',
+  validateSchema(blockCardSchema, 'body'),
+  blockCardController,
 );
 
 export default cardsRouter;
