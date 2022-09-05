@@ -16,11 +16,11 @@ function cardIsBlocked(isBlocked: boolean, action: string) {
   return;
 }
 
-export async function unBlockCard(idCard: number, userPassword: string, action: string) {
+export async function unBlockCard(idCard: number, password: string, action: string) {
   checkActionType(action);
 
-  const { expirationDate, isBlocked, password } = await utilsFunctions.findCardById(idCard);
-  utilsFunctions.checkPassword(userPassword, password || 'error');
+  const { expirationDate, isBlocked, password: passwordCard } = await utilsFunctions.findCardById(idCard);
+  utilsFunctions.checkPassword(password, passwordCard || 'error');
   
   await utilsFunctions.validateDateCard(expirationDate);
   cardIsBlocked(isBlocked, action);
