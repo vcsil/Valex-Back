@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 
 import * as getCardBalanceTransactionsService from '../services/getCardBalanceTransactionsService/getCardBalanceTransactions';
-import * as createCardService from '../services/createCardService/createCard';
 import * as activateCardService from '../services/activateCardService/activateCard';
+import * as unBlockCardService from '../services/unBlockCardService/unBlockCard';
+import * as createCardService from '../services/createCardService/createCard';
 import { TransactionTypes } from '../repositories/cardRepository';
 
 export async function createCard(req: Request, res: Response) {
@@ -20,7 +21,7 @@ export async function activateCard(req: Request, res: Response) {
   
   await activateCardService.activateCard(idCard, securityCode, password);
 
-  res.send('oii');
+  res.status(200).send('Activated card.');
 }
 
 export async function getCardBalanceTransactions(req: Request, res: Response) {
@@ -28,4 +29,12 @@ export async function getCardBalanceTransactions(req: Request, res: Response) {
   const balanceAndTransactions: any = await getCardBalanceTransactionsService.getCardBalanceTransations(parseInt(idCard));
 
   res.status(200).send(balanceAndTransactions);
+}
+
+export async function blockCardController(req: Request, res: Response) {
+  const { idCard, password }: { idCard: number; password: string } = req.body;
+
+  await unBlockCardService.unBlockCard(idCard, password, 'block');
+
+  res.sendStatus(200);
 }

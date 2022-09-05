@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/return-await */
 import * as rechargeRepository from '../../repositories/rechargeRepository';
 import * as paymentRepository from '../../repositories/paymentRepository';
-import * as searchFunctions from '../utils/searchFunctions';
+import * as utilsFunctions from '../utils/utilsFunctions';
 
 function getArrSum(transactions: any): number {
   return transactions.reduce(
@@ -18,7 +18,7 @@ function getCardBalance(recharges: any, payments: any): number {
 }
 
 export async function getCardBalanceTransations(id: number): Promise<any> {
-  await searchFunctions.findCardById(id);
+  await utilsFunctions.findCardById(id);
 
   const recharges: any = await rechargeRepository.findByCardId(id);
   const transactions: any = await paymentRepository.findByCardId(id);
