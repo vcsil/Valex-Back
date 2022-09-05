@@ -33,5 +33,5 @@ export async function generateCard(employeeId: number) {
 
   const expirationDate: string = dayjs().add(5, 'year').format('MM/YY');
 
-  return { numberCard, cvvCardEncrypted, nameCard, expirationDate };
+  return { numberCard, cvvCardEncrypted, nameCard, expirationDate, cvvCard };
 }

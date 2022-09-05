@@ -11,9 +11,9 @@ export async function createCard(req: Request, res: Response) {
 
   const { employeeId, type }: { employeeId: number; type: TransactionTypes } = req.body;
   
-  await createCardService.createCard(apiKey, employeeId, type);
+  const cardData = await createCardService.createCard(apiKey, employeeId, type);
 
-  return res.status(201).send('Created card.');
+  return res.status(201).send(cardData);
 }
 
 export async function activateCard(req: Request, res: Response) {

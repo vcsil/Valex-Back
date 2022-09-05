@@ -1,18 +1,10 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
 
 import * as employeeRepository from '../../repositories/employeeRepository';
-import * as companyRepository from '../../repositories/companyRepository';
 import * as cardRepository from '../../repositories/cardRepository';
+import * as utilsFunctions from '../utils/utilsFunctions';
 import { TransactionTypes, CardInsertData } from '../../repositories/cardRepository';
 import { generateCard } from './generateCard';
-
-async function findCompanyByApiKey(apiKey: string) {
-  const company = await companyRepository.findByApiKey(apiKey);
-
-  if (!company) throw { code: 'Not Found', message: 'Company not found' };
-
-  return company; 
-}
 
 export async function findEmployeeById(employeeId: number) {
   const employee = await employeeRepository.findById(employeeId);
@@ -37,11 +29,11 @@ async function findCardByTypeAndEmployeeId(
 }
 
 export async function createCard(apiKey: string, employeeId: number, type: TransactionTypes) {
-  await findCompanyByApiKey(apiKey);
+  await utilsFunctions.findCompanyByApiKey(apiKey);
   await findEmployeeById(employeeId);
   await findCardByTypeAndEmployeeId(type, employeeId);
 
-  const { numberCard, cvvCardEncrypted, nameCard, expirationDate } = await generateCard(employeeId);
+  const { numberCard, cvvCardEncrypted, nameCard, expirationDate, cvvCard } = await generateCard(employeeId);
 
   const cardData: CardInsertData = {
     number: numberCard,
@@ -55,4 +47,6 @@ export async function createCard(apiKey: string, employeeId: number, type: Trans
   };
 
   await cardRepository.insert(cardData);
+
+  return { numberCard, cvvCard, nameCard, expirationDate };
 }
