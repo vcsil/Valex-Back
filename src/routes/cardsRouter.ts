@@ -7,8 +7,8 @@ import { createCardSchema } from '../schemas/createCardSchema';
 
 const cardsRouter = Router();
 
-cardsRouter.get(
-  '/createCard', 
+cardsRouter.post(
+  '/card', 
   validateSchema(apiKeySchema, 'headers', 'x-api-key'),
   validateSchema(createCardSchema, 'body'),
   createCard,

@@ -6,7 +6,8 @@ export type TransactionTypes =
    | 'restaurant'
    | 'transport'
    | 'education'
-   | 'health';
+   | 'health'
+;
 
 export interface Card {
   id: number;
