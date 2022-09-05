@@ -28,7 +28,7 @@ cardsRouter.get(
 );
 
 cardsRouter.patch( // action: 'block' | 'unblock'
-  '/cards/:action',
+  '/card/:action',
   validateSchema(blockCardSchema, 'body'),
   blockCardController,
 );

@@ -11,8 +11,8 @@ function checkActionType(action: string) {
 }
 
 function cardIsBlocked(isBlocked: boolean, action: string) {
-  if (isBlocked || action === 'block') throw { code: 'Bad Request', message: 'Card is blocked' };
-  if (!isBlocked || action === 'unblock') throw { code: 'Bad Request', message: 'Card is unblocked' };
+  if (isBlocked && action === 'block') throw { code: 'Bad Request', message: 'Card is blocked' };
+  if (!isBlocked && action === 'unblock') throw { code: 'Bad Request', message: 'Card is unblocked' };
   return;
 }
 
@@ -20,11 +20,10 @@ export async function unBlockCard(idCard: number, userPassword: string, action: 
   checkActionType(action);
 
   const { expirationDate, isBlocked, password } = await utilsFunctions.findCardById(idCard);
+  utilsFunctions.checkPassword(userPassword, password || 'error');
   
   await utilsFunctions.validateDateCard(expirationDate);
   cardIsBlocked(isBlocked, action);
-
-  utilsFunctions.checkPassword(userPassword, password || 'error');
 
   const cardData = {
     isBlocked: action === 'block' ? true : false,

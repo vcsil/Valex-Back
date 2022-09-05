@@ -23,7 +23,9 @@ function encryptPassword(password: string): string {
 }
 
 export async function activateCard(idCard: number, securityCode: string, password: string) {
-  const { expirationDate, securityCode: CVC } = await utilsFunctions.findCardById(idCard);
+  const { expirationDate, securityCode: CVC, password: passwordCard } = await utilsFunctions.findCardById(idCard);
+
+  if (passwordCard) throw { code: 'Bad Request', message: 'Card is already active' };
 
   await utilsFunctions.validateDateCard(expirationDate);
   await checkCVC(securityCode, CVC);

@@ -3,6 +3,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import bcrypt from 'bcrypt';
 import dayjs from 'dayjs';
 
+import * as companyRepository from '../../repositories/companyRepository';
 import * as cardRepository from '../../repositories/cardRepository';
 
 dayjs.extend(customParseFormat);
@@ -11,8 +12,6 @@ export async function findCardById(id: number) {
   const card = await cardRepository.findById(id);
   console.log('oii');
   if (!card) throw { code: 'Not Found', message: 'Card not found' };
-  
-  if (card.password) throw { code: 'Bad Request', message: 'Card is already active' };
     
   return card; 
 }
@@ -33,4 +32,12 @@ export async function checkPassword(password: string, cardPassword: string) {
   if (!bcrypt.compareSync(password, cardPassword))
     throw { code: 'Unauthorized', message: 'Incorrect password' };
   return;
+}
+
+export async function findCompanyByApiKey(apiKey: string) {
+  const company = await companyRepository.findByApiKey(apiKey);
+
+  if (!company) throw { code: 'Not Found', message: 'Company not found' };
+
+  return company; 
 }
